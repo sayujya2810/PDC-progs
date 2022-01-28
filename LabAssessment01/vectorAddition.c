@@ -5,30 +5,32 @@
 
 int main(){
 
-    int * a = (int *)malloc(sizeof(int)*4);
-    int * b = (int *)malloc(sizeof(int)*4);
-    int * c = (int *)malloc(sizeof(int)*4);
-    int no_of_threads = 2;
+    int * a = (int *)malloc(sizeof(int)*5);
+    int * b = (int *)malloc(sizeof(int)*5);
+    int * c = (int *)malloc(sizeof(int)*5);
+    int no_of_threads = 5;
 
-    for(int i=0;i<4;i++){
+    for(int i=0;i<5;i++){
         a[i] = i;
     }
-    for(int i = 4; i>0 ;i--){
+    for(int i = 5; i>0 ;i--){
         b[4-i] = -1 * i;
     }
 
     omp_set_num_threads(no_of_threads);
-    int n_per_thread = 4/no_of_threads;
+    int n_per_thread = 5/no_of_threads;
     int i;
     #pragma omp parallel for shared(a,b,c) schedule(static,n_per_thread) private(i)
-        for(int i=0;i<4;i++){
+        for(int i=0;i<5;i++){
             c[i] = a[i] + b[i];
             printf("Thread %d works on element %d \n", omp_get_thread_num(),i);
         }
 
         printf("---------Result------------\n");
-        for(int i=0;i<4;i++){
+        for(int i=0;i<5;i++){
             printf("%d\n",c[i]);
+
+            
         }
     return 0;
 }
